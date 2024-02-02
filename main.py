@@ -1,10 +1,22 @@
 import tkinter as tk
+import time
 
 def verificar():
   if len(operando_1_text.get()) == 0 or len(operando_2_text.get()) == 0:
-    print("Tanto Operando 1 como Operando 2 deben ser ingresados.")
+    global popup
+    popup = tk.Toplevel(bg='white', relief=tk.RAISED, bd=3)
+    popup.overrideredirect(True)
+    popup.geometry("392x25")
+    label = tk.Label(popup, 
+        text="Tanto Operando 1 como Operando 2 deben ser ingresados.")
+    label.pack() 
   else:
+    destroy()
     realizarOperacion()
+
+def destroy():
+  global popup
+  popup.destroy()
 
 def realizarOperacion():
   global operador
@@ -26,15 +38,15 @@ def realizarOperacion():
       operador += operando_1_text.get() + operando_2_text.get(
       ) + operando_3_text.get()
 
-    if operador in operacionesAnteriores:
-      resultado_text.set(operador)
-      usuarioAnterior_text.set(operacionesAnteriores[operador])
-    else:
-      operacionesAnteriores[operador] = usuario_text.get()
-      usuarioAnterior_text.set(usuario_text.get())
-      resultado_text.set(operador)
+  if operador in operacionesAnteriores:
+    resultado_text.set(operador)
+    usuarioAnterior_text.set(operacionesAnteriores[operador])
+  else:
+    operacionesAnteriores[operador] = usuario_text.get()
+    usuarioAnterior_text.set(usuario_text.get())
+    resultado_text.set(operador)
 
-    clear()
+  clear()
 
 def clear():
   global operador
@@ -51,6 +63,7 @@ operando_2_text = tk.StringVar()
 operando_3_text = tk.StringVar()
 usuarioAnterior_text = tk.StringVar()
 resultado_text = tk.StringVar()
+popup = tk.Toplevel()
 
 operador = ""
 operacionesAnteriores = {}
